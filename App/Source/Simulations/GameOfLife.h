@@ -27,7 +27,6 @@ namespace Simulations
 	private:
 		int boardWidth;
 		int boardHeight;
-		std::vector<std::vector<bool>> currentBoard;
-		std::vector<std::vector<bool>> tempBoard;
+		std::vector<std::vector<bool>> board;
 	};
 }

@@ -7,8 +7,7 @@
 namespace Simulations
 {
 	GameOfLife::GameOfLife(int boardWidth, int boardHeight) : BaseSim(),
-		currentBoard(boardWidth + 1, std::vector<bool>(boardHeight + 1)),
-		tempBoard(boardWidth + 1, std::vector<bool>(boardHeight + 1))
+		board(boardWidth + 1, std::vector<bool>(boardHeight + 1))
 	{
 		this->boardWidth = boardWidth;
 		this->boardHeight = boardHeight;
@@ -25,42 +24,38 @@ namespace Simulations
 
 	void GameOfLife::Simulate()
 	{
-		int neighborCounts = 0;
-		bool isAlive = false;
+		std::vector<std::vector<bool>> newBoard = board;
 
-		// clear temp board
-		for (int x = 0; x < boardWidth; x++)
-		{
-			for (int y = 0; y < boardHeight; y++)
-			{
-				tempBoard[x][y] = false;
-			}
-		}
-
-		// Flag cells as either alive or dead
 		for (int x = 0; x < boardWidth; x++)
 		{
 			for (int y = 0; y < boardHeight; y++)
 			{
 				// get the number of neighbors
-				neighborCounts = getNeighborCount(x, y);
+				int neighborCount = getNeighborCount(x, y);
 
 				// check if this cell is alive
-				isAlive = currentBoard[x][y];
-
-				// Process this cells results based on the game of life rules.
-				tempBoard[x][y] = (isAlive && (neighborCounts == 2 || neighborCounts == 3)) || (!isAlive && neighborCounts == 3);
+				bool isAlive = board[x][y];
+				if (isAlive)
+				{
+					// If the cell has 1 or no neighbors, it dies.
+					// If the cell has 4 or more neighbors, it dies.
+					if (neighborCount < 2 || neighborCount > 3)
+					{
+						newBoard[x][y] = false;
+					}
+				}
+				else
+				{
+					// If the empty space has 3 neighbors, the cell is now alive.
+					if (neighborCount == 3)
+					{
+						newBoard[x][y] = true;
+					}
+				}
 			}
 		}
 
-		// copy temp board to currentboard
-		for (int x = 0; x < boardWidth; x++)
-		{
-			for (int y = 0; y < boardHeight; y++)
-			{
-				currentBoard[x][y] = tempBoard[x][y];
-			}
-		}
+		board = newBoard;
 	}
 
 	void GameOfLife::Reset()
@@ -80,25 +75,37 @@ namespace Simulations
 
 	bool GameOfLife::getCell(int x, int y)
 	{
-		return currentBoard[x][y];
+		return board[x][y];
 	}
 
 	void GameOfLife::addCell(int x, int y)
 	{
 		if (x > 0 && y > 0 && x <= boardWidth && y <= boardHeight)
 		{
-			currentBoard[x][y] = true;
+			board[x][y] = true;
 		}
 	}
 
 	uint8_t GameOfLife::getNeighborCount(int xPos, int yPos)
 	{
 		uint8_t count = 0;
-		for (int x = xPos - 1; x <= xPos + 1 && xPos > 0 && xPos <= boardWidth; x++)
+		for (int x = -1; x <= 1; x++)
 		{
-			for (int y = yPos - 1; y <= yPos + 1 && yPos > 0 && yPos <= boardHeight; y++)
+			for (int y = -1; y <= +1; y++)
 			{
-				count += currentBoard[x][y] ? 1 : 0;
+				// do not count itself
+				if (x == 0 && y == 0)
+				{
+					continue;
+				}
+
+				int newRow = xPos + x;
+				int newCol = yPos + y;
+
+				if (newRow >= 0 && newRow <= boardWidth && newCol >= 0 && newCol <= boardHeight)
+				{
+					count += board[newRow][newCol] ? 1 : 0;
+				}
 			}
 		}
 
@@ -116,7 +123,7 @@ namespace Simulations
 			for (int y = 0; y < boardHeight; y++)
 			{
 				bool result = static_cast<bool>(dis(gen));
-				currentBoard[x][y] = result;
+				board[x][y] = result;
 			}
 		}
 	}

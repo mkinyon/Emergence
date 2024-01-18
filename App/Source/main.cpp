@@ -29,7 +29,7 @@ public:
 		elapsedTime += fElapsedTime;
 
 		// tick simulation
-		if (elapsedTime >= 0.001f)
+		if (elapsedTime >= 0.001f && !isPaused)
 		{
 			simulation->Simulate();
 			elapsedTime = 0.0f;
@@ -43,6 +43,10 @@ public:
 		if (GetKey(olc::Key::R).bHeld)
 		{
 			simulation->Reset();
+		}
+		if (GetKey(olc::Key::P).bPressed)
+		{
+			isPaused = !isPaused;
 		}
 		if (GetKey(olc::Key::C).bPressed)
 		{
@@ -87,6 +91,7 @@ public:
 
 private:
 	float elapsedTime = 0.0f;
+	bool isPaused = false;
 };
 
 
