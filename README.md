@@ -5,6 +5,9 @@ Emergence is a simple C++ application that showcases different algorithms based 
 - [Falling Sand](https://en.wikipedia.org/wiki/Falling-sand_game)
 
 ## Examples
+| Game Of Life   |      Langton's Ant      |  Falling Sand |
+|-------------------|------------------|---------|
+| ![Game Of Life](Media/game-of-life.gif) |  ![Langton's Ant](Media/langtons-ant.gif) | ![Falling Sand](Media/falling-sand.gif) |
 
 ## Controls
 | Key | Description |
