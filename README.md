@@ -2,7 +2,7 @@
 Emergence is a simple C++ application that showcases different algorithms based on emergent behavior and cellular automation.  Currently, it supports:
 - [Conway's Game Of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 - [Langton's Ant](https://en.wikipedia.org/wiki/Langton%27s_ant)
-- [Falling Sand](https://en.wikipedia.org/wiki/Falling-sand_game) (Currently supports one type of sand.)
+- [Falling Sand](https://en.wikipedia.org/wiki/Falling-sand_game)
 
 ## Examples
 
